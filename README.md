@@ -1,5 +1,7 @@
-# racani-lab3
-Third laboratory exercise for FER's Computer Animation course
+# racani
+Repository containing all three laboratory exercises for FER's Computer Animation course.
+
+Notes for third laboratory exercise.
 
 Tutorials used for water shader:
 https://docs.godotengine.org/en/stable/tutorials/shaders/your_first_shader/your_first_3d_shader.html
