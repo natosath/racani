@@ -1,0 +1,187 @@
+[gd_scene load_steps=32 format=2]
+
+[ext_resource path="res://shaders/WeirdWaveFunction.gdshader" type="Shader" id=1]
+[ext_resource path="res://shaders/Sun.gdshader" type="Shader" id=2]
+[ext_resource path="res://shaders/Sand.gdshader" type="Shader" id=3]
+[ext_resource path="res://shaders/WaterTutorial.gdshader" type="Shader" id=4]
+[ext_resource path="res://shaders/FarawayPulse.gdshader" type="Shader" id=5]
+
+[sub_resource type="OpenSimplexNoise" id=3]
+seed = 4
+octaves = 8
+period = 83.3
+persistence = 0.156
+lacunarity = 1.83
+
+[sub_resource type="NoiseTexture" id=4]
+seamless = true
+noise = SubResource( 3 )
+
+[sub_resource type="OpenSimplexNoise" id=5]
+period = 83.3
+persistence = 0.618
+lacunarity = 2.46
+
+[sub_resource type="NoiseTexture" id=6]
+seamless = true
+as_normalmap = true
+bump_strength = 32.0
+noise = SubResource( 5 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 4 )
+shader_param/height_scale = 0.8
+shader_param/frequency = 0.6
+shader_param/noise = SubResource( 4 )
+shader_param/normalmap = SubResource( 6 )
+
+[sub_resource type="PlaneMesh" id=1]
+material = SubResource( 2 )
+size = Vector2( 10, 10 )
+subdivide_width = 64
+subdivide_depth = 64
+
+[sub_resource type="OpenSimplexNoise" id=10]
+period = 0.1
+
+[sub_resource type="NoiseTexture" id=9]
+noise = SubResource( 10 )
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = ExtResource( 1 )
+shader_param/frequency = 0.6
+shader_param/scale = 1.5
+shader_param/noise = SubResource( 9 )
+shader_param/normalmap = SubResource( 6 )
+
+[sub_resource type="PlaneMesh" id=7]
+material = SubResource( 8 )
+size = Vector2( 10, 10 )
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = ExtResource( 5 )
+shader_param/curvature = -1.5
+shader_param/pulse_speed = 5.0
+shader_param/noise = SubResource( 9 )
+shader_param/normalmap = SubResource( 6 )
+
+[sub_resource type="PlaneMesh" id=14]
+material = SubResource( 11 )
+size = Vector2( 20, 20 )
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="OpenSimplexNoise" id=20]
+
+[sub_resource type="NoiseTexture" id=16]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource( 20 )
+
+[sub_resource type="OpenSimplexNoise" id=19]
+
+[sub_resource type="NoiseTexture" id=17]
+flags = 15
+width = 1024
+height = 1024
+as_normalmap = true
+bump_strength = 13.3
+noise = SubResource( 19 )
+
+[sub_resource type="ShaderMaterial" id=18]
+shader = ExtResource( 2 )
+shader_param/rotation_speed = 2.0
+shader_param/emission_intensity = 2.0
+shader_param/sun_color = Vector3( 0.756, 0.266, 0.05 )
+shader_param/noise = SubResource( 16 )
+shader_param/normalmap = SubResource( 17 )
+
+[sub_resource type="SphereMesh" id=15]
+material = SubResource( 18 )
+radius = 5.0
+height = 10.0
+
+[sub_resource type="OpenSimplexNoise" id=24]
+
+[sub_resource type="NoiseTexture" id=25]
+width = 128
+height = 128
+noise = SubResource( 24 )
+
+[sub_resource type="OpenSimplexNoise" id=26]
+
+[sub_resource type="NoiseTexture" id=27]
+noise = SubResource( 26 )
+
+[sub_resource type="OpenSimplexNoise" id=28]
+
+[sub_resource type="NoiseTexture" id=29]
+as_normalmap = true
+bump_strength = 15.6
+noise = SubResource( 28 )
+
+[sub_resource type="ShaderMaterial" id=23]
+shader = ExtResource( 3 )
+shader_param/sand_color = Vector3( 0.9, 0.2, 0.1 )
+shader_param/bump = 2.0
+shader_param/waviness = 70.0
+shader_param/wave_frequency = 13.0
+shader_param/depth = 1.0
+shader_param/velocity = Vector2( 0.5, 0 )
+shader_param/noise = SubResource( 27 )
+shader_param/extraNoise = SubResource( 25 )
+shader_param/normalmap = SubResource( 29 )
+
+[sub_resource type="PlaneMesh" id=21]
+material = SubResource( 23 )
+size = Vector2( 10, 10 )
+subdivide_width = 32
+subdivide_depth = 32
+
+[node name="Shaders" type="Spatial"]
+
+[node name="WaterTutorial" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+
+[node name="OmniLight" type="OmniLight" parent="WaterTutorial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20691, 5.62245, 0.967582 )
+light_energy = 16.0
+light_indirect_energy = 1.974
+light_specular = 3.574
+shadow_enabled = true
+
+[node name="WeirdWaveFunction" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -36.7557, 0, -29.2023 )
+mesh = SubResource( 7 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="WeirdWaveFunction"]
+transform = Transform( 1, 0, 0, 0, 0.992887, 0.119062, 0, -0.119062, 0.992887, 0, 4.06057, 0 )
+
+[node name="FarawayPulse" type="MeshInstance" parent="."]
+transform = Transform( -0.00891857, 0.99996, 0, -0.99996, -0.00891857, 0, 0, 0, 1, -82.3252, 10.1281, -16.3872 )
+mesh = SubResource( 14 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="FarawayPulse"]
+transform = Transform( 1, 0, 0, 0, 0.992887, 0.119062, 0, -0.119062, 0.992887, 0, 4.06057, 0 )
+
+[node name="Sun" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -44.3226, 0, 0 )
+mesh = SubResource( 15 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Sun"]
+transform = Transform( 1, 0, 0, 0, -0.403593, 0.914939, 0, -0.914939, -0.403593, 3.65645, 8.82741, -3.23501 )
+light_energy = 1.835
+light_specular = 1.057
+shadow_enabled = true
+shadow_reverse_cull_face = true
+
+[node name="Sand" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.79858, -31.63 )
+mesh = SubResource( 21 )
+
+[node name="OmniLight" type="OmniLight" parent="Sand"]
+transform = Transform( 1, 0, 0, 0, -0.303401, 0.952863, 0, -0.952863, -0.303401, 3.26528, 3.31012, -0.386559 )
+light_energy = 9.348
